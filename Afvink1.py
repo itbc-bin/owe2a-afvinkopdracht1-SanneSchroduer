@@ -1,9 +1,14 @@
+#auteur: Sanne Schroduer
+#Afvinkopdracht 1 - Versie 1
+
 
 bestand = open("Alpaca.fa")
 enzymen = open("enzymen.txt")
 
-# onderstaande functie roept de andere functies aan(lees_inhoud, is_dna en knip_enzymen)
-# slaat de input van het zoekwoord op als variabele
+'''
+onderstaande functie roept de andere functies aan(lees_inhoud, is_dna en knip_enzymen)
+slaat de input van het zoekwoord op als variabele
+'''
 
 def main():
     headers, seqs = lees_inhoud(bestand)
@@ -12,11 +17,12 @@ def main():
     knip_enzymen(seqs, headers, enzymen, zoekwoord)
 
 
+'''
+lees_inhoud krijgt als parameter het bestand met sequenties mee
+returnt een lijst genaamd headers met daarin alle headers uit het bestand (elke index bevat 1 header)
+return een lijst genaamd seqs met daarin alle sequenties (elke index bevat 1 gehele sequentie)
+'''
 
-# lees_inhoud krijgt als parameter het bestand met sequenties mee
-# returnt een lijst genaamd headers met daarin alle headers uit het bestand (elke index bevat 1 header)
-# return een lijst genaamd seqs met daarin alle sequenties (elke index bevat 1 gehele sequentie)
-    
 def lees_inhoud(bestand):
     headers = []
     seqs = []
@@ -35,10 +41,11 @@ def lees_inhoud(bestand):
     
     return headers, seqs
 
-# is_dna krijgt als parameter het lijstje met sequenties mee
-# per sequentie wordt gekeken of de totale lengte gelijk is aan het aantal A+T+G+C
-# returnt True of False
-
+'''
+is_dna krijgt als parameter het lijstje met sequenties mee
+per sequentie wordt gekeken of de totale lengte gelijk is aan het aantal A+T+G+C
+returnt True of False
+'''
 
     
 def is_dna(seqs):
@@ -53,10 +60,12 @@ def is_dna(seqs):
             return True
         else:
             return False
-        
-# knip_enzymen krijgt als parameters mee:
-# de lijst met sequenties, de lijst met headers,
-# het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
+
+'''       
+knip_enzymen krijgt als parameters mee:
+de lijst met sequenties, de lijst met headers,
+het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
+'''
 
 def knip_enzymen(seqs, headers, enzymen, zoekwoord):
     enzymen_2d_lijst = []
