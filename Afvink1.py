@@ -2,8 +2,7 @@
 #Afvinkopdracht 1 - Versie 1
 
 
-bestand = open("Alpaca.fa")
-enzymen = open("enzymen.txt")
+
 
 '''
 onderstaande functie roept de andere functies aan(lees_inhoud, is_dna en knip_enzymen)
@@ -11,10 +10,26 @@ slaat de input van het zoekwoord op als variabele
 '''
 
 def main():
+
+    bestand = invoer_bestand()
+    enzymen = open("enzymen.txt")
     headers, seqs = lees_inhoud(bestand)
     is_dna(seqs)
     zoekwoord = input("Geef een zoekwoord op: ")
     knip_enzymen(seqs, headers, enzymen, zoekwoord)
+
+def invoer_bestand():
+
+    while True:
+        try:
+            data = input("Geef de bestandsnaam, in fasta format: " )
+            bestand = open(data)
+            return bestand
+
+        except FileNotFoundError:
+            print("Het bestand kan niet gevonden worden")
+            print("Voer een geldig bestand in en probeer het opnieuw")
+            print("-" * 70)
 
 
 '''
