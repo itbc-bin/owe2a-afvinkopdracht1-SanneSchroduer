@@ -1,5 +1,6 @@
 #auteur: Sanne Schroduer
 #Afvinkopdracht 1 
+#Datum: 16-11-2017
 
 
 '''
