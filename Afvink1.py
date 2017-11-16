@@ -14,8 +14,8 @@ def main():
     enzymen = open("enzymen.txt")
     headers, seqs = lees_inhoud(bestand)
     is_DNA = is_dna(seqs)
-    zoekwoord = input("Geef een zoekwoord op: ")
-    knip_enzymen(seqs, headers, enzymen, zoekwoord)
+    input_zoekwoord(seqs, headers, enzymen)
+    zoekwoord = knip_enzymen(seqs, headers, enzymen)
 
 def invoer_bestand():
 
@@ -25,7 +25,6 @@ def invoer_bestand():
             bestand = open(bestands_naam)
             return bestand, bestands_naam
 
-        
 
         except FileNotFoundError:
             print("Het bestand kan niet gevonden worden")
@@ -84,14 +83,21 @@ def is_dna(seqs):
     for x in seqs:
         if x not in nuc:
             isDNA = False
-            break
-
+    
     return isDNA
+
+
+
+def input_zoekwoord(seqs, headers, enzymen):
+
+    try:
+        zoekwoord = knip_enzymen(seqs, headers, enzymen)
+
             
 
-
-
-
+    except ValueError:
+        print("De invoer is geen tekst, probeer opnieuw.")
+   
 
 '''       
 knip_enzymen krijgt als parameters mee:
@@ -99,9 +105,11 @@ de lijst met sequenties, de lijst met headers,
 het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
 '''
 
-def knip_enzymen(seqs, headers, enzymen, zoekwoord):
+def knip_enzymen(seqs, headers, enzymen):
     enzymen_2d_lijst = []
-    
+
+    zoekwoord = str(input("Geef een zoekwoord op: "))
+             
 
     for line in enzymen:
         combi = line.strip().split(" ")
@@ -117,7 +125,8 @@ def knip_enzymen(seqs, headers, enzymen, zoekwoord):
             for combi in enzymen_2d_lijst:
                 if combi[1] in seqs[x]:
                     print("Enzym", combi[0], "knipt in ", combi[1])
-                    
+
+    return zoekwoord             
     # voor elke index in de range van de lengte van de lijst met headers wordt gekeken of het zoekwoord voorkomt.
     # als het zoekwoord voorkomt in een header, wordt deze geprint.
     # voor elke combi in de 2d_lijst wordt gekeken of de knipsequentie voorkomt in een sequentie uit de lijst met sequenties
