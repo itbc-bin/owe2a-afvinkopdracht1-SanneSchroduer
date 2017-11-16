@@ -11,7 +11,8 @@ slaat de input van het zoekwoord op als variabele
 
 def main():
 
-    bestand = invoer_bestand()
+    bestand, bestands_naam = invoer_bestand()
+    is_fasta(bestands_naam)
     enzymen = open("enzymen.txt")
     headers, seqs = lees_inhoud(bestand)
     is_dna(seqs)
@@ -22,15 +23,30 @@ def invoer_bestand():
 
     while True:
         try:
-            data = input("Geef de bestandsnaam, in fasta format: " )
-            bestand = open(data)
-            return bestand
+            bestands_naam = input("Geef de bestandsnaam, in fasta format: " )
+            bestand = open(bestands_naam)
+            return bestand, bestands_naam
+
+        
 
         except FileNotFoundError:
             print("Het bestand kan niet gevonden worden")
             print("Voer een geldig bestand in en probeer het opnieuw")
             print("-" * 70)
+            
 
+
+def is_fasta(bestands_naam):
+
+    fasta = False
+    if bestands_naam.endswith(".fa") or bestands_naam.endswith(".fasta"):
+        fasta = True
+    else:
+        print("Het bestand is geen fasta format.")
+        bestand, bestands_naam = invoer_bestand()
+            
+            
+    
 
 '''
 lees_inhoud krijgt als parameter het bestand met sequenties mee
@@ -76,12 +92,23 @@ def is_dna(seqs):
         else:
             return False
 
+
+
 '''       
 knip_enzymen krijgt als parameters mee:
 de lijst met sequenties, de lijst met headers,
 het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
 '''
+'''
 
+def zoekwoord():
+    while True:
+        try:
+            zoekwoord = input("Geef een zoekwoord op: ")
+            return zoekwoord
+
+        except 
+'''
 def knip_enzymen(seqs, headers, enzymen, zoekwoord):
     enzymen_2d_lijst = []
     
