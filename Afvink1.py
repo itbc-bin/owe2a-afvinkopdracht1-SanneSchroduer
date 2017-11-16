@@ -1,7 +1,5 @@
 #auteur: Sanne Schroduer
-#Afvinkopdracht 1 - Versie 1
-
-
+#Afvinkopdracht 1 
 
 
 '''
@@ -15,7 +13,7 @@ def main():
     is_fasta(bestands_naam)
     enzymen = open("enzymen.txt")
     headers, seqs = lees_inhoud(bestand)
-    is_dna(seqs)
+    is_DNA = is_dna(seqs)
     zoekwoord = input("Geef een zoekwoord op: ")
     knip_enzymen(seqs, headers, enzymen, zoekwoord)
 
@@ -80,17 +78,18 @@ returnt True of False
 
     
 def is_dna(seqs):
+    nuc = 'ATGCN'
+    isDNA = True
 
     for x in seqs:
-        A = seqs.count("A")
-        T = seqs.count("T")
-        C = seqs.count("C")
-        G = seqs.count("G")
-        dna = A + T + C + G
-        if dna == len(seqs):
-            return True
-        else:
-            return False
+        if x not in nuc:
+            isDNA = False
+            break
+
+    return isDNA
+            
+
+
 
 
 
@@ -99,16 +98,7 @@ knip_enzymen krijgt als parameters mee:
 de lijst met sequenties, de lijst met headers,
 het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
 '''
-'''
 
-def zoekwoord():
-    while True:
-        try:
-            zoekwoord = input("Geef een zoekwoord op: ")
-            return zoekwoord
-
-        except 
-'''
 def knip_enzymen(seqs, headers, enzymen, zoekwoord):
     enzymen_2d_lijst = []
     
