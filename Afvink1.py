@@ -20,18 +20,20 @@ def main():
     enzymen = open("enzymen.txt")
     headers, seqs = lees_inhoud(bestand)
 
-    
-    DNA_check = is_dna(seqs)
-   
-    
     try:
-        knip_enzymen(DNA_check, seqs, headers, enzymen)
-        
+        DNA_check = is_dna(seqs)
     except TypeError:
         print("Dit bestand bevat geen DNA sequenties.\nProbeer opnieuw.")
         print("-" * 70)
-    except ValueError:
+        
+    
+    try:
+        knip_enzymen(DNA_check, seqs, headers, enzymen)
+    
+    except NameError:
         print("Dit zoekwoord komt niet voor in het bestand.")
+    except ValueError:
+        print("Geen enkel enzym knipt in deze een sequentie.")
         
 
     
@@ -62,8 +64,8 @@ def lees_inhoud(bestand):
                 seq = ""
         else:
             seq += line
-            
-    
+        
+
     return headers, seqs
 
 '''
@@ -81,25 +83,25 @@ def is_dna(seqs):
         T = seq.count("T")
         C = seq.count("C")
         G = seq.count("G")
-        
-        dna = A + T + C + G 
+        N = seq.count("N")
+        dna = A + T + C + G + N
 
         if dna == len(seq):
             DNA_check = True
-       # else:
-           # raise TypeError
-    
+        else:
+            raise TypeError
+        
     return DNA_check
 
-
-'''       
+'''
 knip_enzymen krijgt als parameters mee:
 de lijst met sequenties, de lijst met headers,
 het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
 '''
 
 def knip_enzymen(DNA_check, seqs, headers, enzymen):
-    count = 0
+    woord = 0
+    knipenzymen = 0
     
     enzymen_2d_lijst = []
     for line in enzymen:
@@ -107,35 +109,29 @@ def knip_enzymen(DNA_check, seqs, headers, enzymen):
         combi[1] = combi[1].replace("^", "")
         enzymen_2d_lijst.append(combi)
 
-    if DNA_check == True:
-        zoekwoord_check = False
-        while zoekwoord_check == False:
-        
-            zoekwoord = input("Geef een zoekwoord op: ")
+   
+    
+    zoekwoord = input("Geef een zoekwoord op: ")
 
-            for x in range(len(headers)):
-                if zoekwoord in headers[x]:
-                    print(headers[x])
-                    count += 1
-                    for combi in enzymen_2d_lijst:
-                        if combi[1] in seqs[x]:
-                            print("Enzym", combi[0], "knipt in ", combi[1])
-               
-            zoekwoord_check = True
+    for x in range(len(headers)):
+        if zoekwoord in headers[x]:
+            print(headers[x])
+            woord += 1
+            for combi in enzymen_2d_lijst:
+                if combi[1] in seqs[x]:
+                    knipenzymen += 1
+                    print("Enzym", combi[0], "knipt in ", combi[1])
 
-    else:
-        raise TypeError
+    
         
     # de variabele combi bevat 2 indexen, combi[0] is de naam van het enzym, combi[1] de knipsequentie
     # de 2d_lijst bevat per index 1 combi 
     
-    if count == 0:
+    if woord == 0:
+        raise NameError
+    if knipenzymen == 0:
         raise ValueError
 
-
-    #if combi[1] not in seqs[x]:
-     #   raise TypeError
-                
     # voor elke index in de range van de lengte van de lijst met headers wordt gekeken of het zoekwoord voorkomt.
     # als het zoekwoord voorkomt in een header, wordt deze geprint.
     # voor elke combi in de 2d_lijst wordt gekeken of de knipsequentie voorkomt in een sequentie uit de lijst met sequenties
