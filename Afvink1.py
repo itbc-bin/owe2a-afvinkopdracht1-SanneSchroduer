@@ -30,6 +30,8 @@ def main():
     except TypeError:
         print("Dit bestand bevat geen DNA sequenties.\nProbeer opnieuw.")
         print("-" * 70)
+    except ValueError:
+        print("Dit zoekwoord komt niet voor in het bestand.")
         
 
     
@@ -97,7 +99,8 @@ het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
 '''
 
 def knip_enzymen(DNA_check, seqs, headers, enzymen):
-
+    count = 0
+    
     enzymen_2d_lijst = []
     for line in enzymen:
         combi = line.strip().split(" ")
@@ -109,36 +112,30 @@ def knip_enzymen(DNA_check, seqs, headers, enzymen):
         while zoekwoord_check == False:
         
             zoekwoord = input("Geef een zoekwoord op: ")
+
             for x in range(len(headers)):
                 if zoekwoord in headers[x]:
                     print(headers[x])
+                    count += 1
                     for combi in enzymen_2d_lijst:
                         if combi[1] in seqs[x]:
                             print("Enzym", combi[0], "knipt in ", combi[1])
-            
+               
             zoekwoord_check = True
+
     else:
         raise TypeError
-                
-   
         
     # de variabele combi bevat 2 indexen, combi[0] is de naam van het enzym, combi[1] de knipsequentie
     # de 2d_lijst bevat per index 1 combi 
     
-'''
-
-        if zoekwoord not in headers[x]:
-            count += 1
-
-    if count >= len(headers):
+    if count == 0:
         raise ValueError
-    
-        print("ja")
-        #raise ValueError
 
-    if combi[1] not in seqs[x]:
-        raise TypeError
-   '''              
+
+    #if combi[1] not in seqs[x]:
+     #   raise TypeError
+                
     # voor elke index in de range van de lengte van de lijst met headers wordt gekeken of het zoekwoord voorkomt.
     # als het zoekwoord voorkomt in een header, wordt deze geprint.
     # voor elke combi in de 2d_lijst wordt gekeken of de knipsequentie voorkomt in een sequentie uit de lijst met sequenties
