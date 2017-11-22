@@ -1,5 +1,5 @@
 #auteur: Sanne Schroduer
-#Afvinkopdracht 1 
+#Afvinkopdracht 1 - Exception Handling
 #Datum: 21-11-2017
 
 
