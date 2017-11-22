@@ -1,6 +1,6 @@
 #auteur: Sanne Schroduer
 #Afvinkopdracht 1 - Exception Handling
-#Datum: 21-11-2017
+#Datum: 22-11-2017
 
 
 def main():
@@ -18,23 +18,33 @@ def main():
          
      
     enzymen = open("enzymen.txt")
-    headers, seqs = lees_inhoud(bestand)
 
-    try:
-        DNA_check = is_dna(seqs)
-    except TypeError:
-        print("Dit bestand bevat geen DNA sequenties.\nProbeer opnieuw.")
-        print("-" * 70)
-        
-    
-    try:
-        knip_enzymen(DNA_check, seqs, headers, enzymen)
-    
-    except NameError:
-        print("Dit zoekwoord komt niet voor in het bestand.")
-    except ValueError:
-        print("Geen enkel enzym knipt in deze een sequentie.")
-        
+    inhoud_check = False
+    while inhoud_check == False:
+        try:
+            headers, seqs = lees_inhoud(bestand)
+            inhoud_check = True
+        except ValueError:
+            print("Dit bestand bevat geen sequenties.")
+            break
+            
+    while inhoud_check == True:
+
+        try:
+            is_dna = test_DNA(seqs)
+
+            try:
+                knip_enzymen(DNA_check, seqs, headers, enzymen)
+
+            except NameError:
+                print("Dit zoekwoord komt niet voor in het bestand.")
+        except ValueError:
+            print("Geen enkel enzym knipt in deze een sequentie.")
+                
+        except TypeError:
+            print("Dit bestand bevat geen DNA sequenties.\nProbeer opnieuw.")
+            print("-" * 70)
+            
 
     
 def invoer_bestand():
@@ -43,17 +53,12 @@ def invoer_bestand():
     bestand = open(bestands_naam)
     return bestand, bestands_naam
 
-   
-'''
-lees_inhoud krijgt als parameter het bestand met sequenties mee
-returnt een lijst genaamd headers met daarin alle headers uit het bestand (elke index bevat 1 header)
-return een lijst genaamd seqs met daarin alle sequenties (elke index bevat 1 gehele sequentie)
-'''
 
 def lees_inhoud(bestand):
     headers = []
     seqs = []
-    seq = "" 
+    seq = ""
+
 
     for line in bestand:
         line = line.strip()
@@ -64,20 +69,15 @@ def lees_inhoud(bestand):
                 seq = ""
         else:
             seq += line
-        
-
+    if len(seq) == 0:
+        raise ValueError
+    
     return headers, seqs
 
-'''
-is_dna krijgt als parameter het lijstje met sequenties mee
-per sequentie wordt gekeken of de totale lengte gelijk is aan het aantal A+T+G+C
-returnt True of False
-'''
-
     
-def is_dna(seqs):
+def test_DNA(seqs):
 
-    DNA_check = False
+    is_dna = False
     for seq in seqs:
         A = seq.count("A")
         T = seq.count("T")
@@ -87,17 +87,12 @@ def is_dna(seqs):
         dna = A + T + C + G + N
 
         if dna == len(seq):
-            DNA_check = True
+            is_dna = True
         else:
             raise TypeError
         
-    return DNA_check
+    return is_dna
 
-'''
-knip_enzymen krijgt als parameters mee:
-de lijst met sequenties, de lijst met headers,
-het textbestand waarin de knipenzymen in staan en de variabele zoekwoord.
-'''
 
 def knip_enzymen(DNA_check, seqs, headers, enzymen):
     woord = 0
@@ -121,22 +116,13 @@ def knip_enzymen(DNA_check, seqs, headers, enzymen):
                 if combi[1] in seqs[x]:
                     knipenzymen += 1
                     print("Enzym", combi[0], "knipt in ", combi[1])
-
     
-        
-    # de variabele combi bevat 2 indexen, combi[0] is de naam van het enzym, combi[1] de knipsequentie
-    # de 2d_lijst bevat per index 1 combi 
     
     if woord == 0:
         raise NameError
     if knipenzymen == 0:
         raise ValueError
 
-    # voor elke index in de range van de lengte van de lijst met headers wordt gekeken of het zoekwoord voorkomt.
-    # als het zoekwoord voorkomt in een header, wordt deze geprint.
-    # voor elke combi in de 2d_lijst wordt gekeken of de knipsequentie voorkomt in een sequentie uit de lijst met sequenties
-    # als dat zo is, wordt de naam van het enzym en de knipsequentie geprint
-    
                     
 main()
 
